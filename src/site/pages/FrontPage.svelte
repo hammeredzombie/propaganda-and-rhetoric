@@ -4,7 +4,6 @@
   import { articles } from '../game/articles.js';
   import { goToArticle } from '../game/router.js';
   import { state } from '../game/state.js';
-  import { fx } from '../game/fx.js';
 
   const hero = articles[0];
   const topTwo = articles.slice(1, 3);
@@ -26,10 +25,7 @@
     size: 'small'
   };
 
-  function openArticle(article, event) {
-    if (event) {
-      fx.inkSplash({ x: event.clientX, y: event.clientY });
-    }
+  function openArticle(article) {
     state.markArticleRead(article.id);
     goToArticle(article.id);
   }
@@ -37,7 +33,7 @@
 
 <div class="front-grid">
   <section class="front-grid__hero">
-    <ArticleCard article={hero} size="hero" onOpen={(a) => openArticle(a, window.__lastEvent)} />
+    <ArticleCard article={hero} size="hero" onOpen={openArticle} />
   </section>
 
   <aside class="front-grid__rail">
@@ -46,13 +42,13 @@
 
   <section class="front-grid__lead">
     {#each topTwo as a}
-      <ArticleCard article={a} size="large" onOpen={(a) => openArticle(a, window.__lastEvent)} />
+      <ArticleCard article={a} size="large" onOpen={openArticle} />
     {/each}
   </section>
 
   <section class="front-grid__list">
     {#each rest as a}
-      <ArticleCard article={a} size="medium" onOpen={(a) => openArticle(a, window.__lastEvent)} />
+      <ArticleCard article={a} size="medium" onOpen={openArticle} />
     {/each}
   </section>
 
@@ -60,11 +56,6 @@
     <AdSlot ad={footerAd} />
   </section>
 </div>
-
-<svelte:window
-  on:pointerdown={(e) => (window.__lastEvent = e)}
-  on:keydown={(e) => (window.__lastEvent = { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 })}
-/>
 
 <style>
   .front-grid {
