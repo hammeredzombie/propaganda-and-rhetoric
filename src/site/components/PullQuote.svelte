@@ -1,0 +1,45 @@
+<script>
+  export let quote = '';
+  export let attribution = '';
+</script>
+
+<aside class="pullquote">
+  <blockquote>
+    <p>{quote}</p>
+    {#if attribution}<cite>— {attribution}</cite>{/if}
+  </blockquote>
+</aside>
+
+<style>
+  .pullquote {
+    margin: var(--space-6) 0 var(--space-7);
+    padding: var(--space-4) var(--space-5) 0;
+    border-top: 1px solid var(--color-rule-strong);
+  }
+
+  blockquote {
+    margin: 0;
+  }
+
+  p {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    margin: 0 0 var(--space-3);
+    text-align: center;
+  }
+
+  cite {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-style: normal;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-ink-muted);
+    text-align: center;
+  }
+</style>
