@@ -5,3 +5,7 @@ dist
 *.log
 .env
 .env.local
+
+# Godot 4+ — local editor cache / imports
+.godot/
+*.translation
