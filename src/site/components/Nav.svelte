@@ -11,15 +11,15 @@
   ];
 </script>
 
-<nav class="site-nav" aria-label="Primary sections">
+<div class="site-nav" aria-hidden="true">
   <ul>
     {#each sections as section}
       <li>
-        <a href="#{section.toLowerCase()}" on:click|preventDefault>{section}</a>
+        <span class="site-nav__item">{section}</span>
       </li>
     {/each}
   </ul>
-</nav>
+</div>
 
 <style>
   .site-nav {
@@ -34,7 +34,7 @@
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-5);
+    gap: var(--space-3);
     justify-content: center;
   }
 
@@ -42,27 +42,24 @@
     ul {
       max-width: 1120px;
       padding: var(--space-3) var(--space-6);
+      gap: var(--space-5);
     }
   }
 
-  a {
+  .site-nav__item {
+    display: inline-block;
+    padding: var(--space-2) var(--space-3);
     font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--text-xs);
     text-transform: uppercase;
     letter-spacing: 0.14em;
     color: var(--color-ink);
-    border-bottom: none;
-  }
-
-  a:hover,
-  a:focus-visible {
-    color: var(--color-ink-strong);
   }
 
   @media (max-width: 720px) {
     ul {
-      gap: var(--space-3);
+      gap: var(--space-1);
       padding: var(--space-2);
     }
   }

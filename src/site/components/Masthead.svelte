@@ -1,4 +1,6 @@
 <script>
+  import { goHome } from '../game/router.js';
+
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
@@ -12,10 +14,10 @@
     <span>Vol. CXLVII · No. 2,318</span>
   </div>
   <div class="masthead__title">
-    <a href="./" on:click|preventDefault={() => history.pushState({}, '', './')}>
-      <h1>The Daily Record</h1>
+    <a href="./" on:click|preventDefault={goHome}>
+      <p class="masthead__nameplate">The Proper Goose</p>
     </a>
-    <p class="masthead__tagline">All the news that stays on-message.</p>
+    <p class="masthead__tagline">Take a Gander at the daily News.</p>
   </div>
   <div class="masthead__meta masthead__meta--right">
     <span>{today}</span>
@@ -45,18 +47,26 @@
     text-align: center;
   }
 
-  .masthead__title h1 {
+  .masthead__nameplate {
     font-family: var(--font-display);
     font-size: clamp(2rem, 5vw, var(--text-3xl));
     font-weight: 700;
+    line-height: var(--leading-tight);
     margin: 0;
     letter-spacing: 0.005em;
     font-feature-settings: "lnum", "kern";
+    color: var(--color-ink);
   }
 
   .masthead__title a {
     color: inherit;
     border-bottom: none;
+    display: inline-block;
+  }
+
+  .masthead__title a:focus-visible {
+    outline: 2px solid var(--color-ink-strong);
+    outline-offset: 4px;
   }
 
   .masthead__tagline {

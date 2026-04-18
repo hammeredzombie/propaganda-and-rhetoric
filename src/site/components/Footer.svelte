@@ -1,38 +1,38 @@
 <script>
   const year = new Date().getFullYear();
+
+  const columns = [
+    {
+      heading: 'The Proper Goose',
+      items: ['About Us', 'Masthead', 'Corrections', 'Careers']
+    },
+    {
+      heading: 'Reader',
+      items: ['Home Delivery', 'Back Issues', 'Classifieds']
+    },
+    {
+      heading: 'Policy',
+      items: ['Terms of Service', 'Privacy', 'Contact']
+    }
+  ];
 </script>
 
 <footer class="site-footer">
   <div class="site-footer__inner">
     <div class="site-footer__cols">
-      <section>
-        <h5>The Daily Record</h5>
-        <ul>
-          <li><a href="#about" on:click|preventDefault>About Us</a></li>
-          <li><a href="#masthead" on:click|preventDefault>Masthead</a></li>
-          <li><a href="#corrections" on:click|preventDefault>Corrections</a></li>
-          <li><a href="#careers" on:click|preventDefault>Careers</a></li>
-        </ul>
-      </section>
-      <section>
-        <h5>Reader</h5>
-        <ul>
-          <li><a href="#delivery" on:click|preventDefault>Home Delivery</a></li>
-          <li><a href="#back-issues" on:click|preventDefault>Back Issues</a></li>
-          <li><a href="#classifieds" on:click|preventDefault>Classifieds</a></li>
-        </ul>
-      </section>
-      <section>
-        <h5>Policy</h5>
-        <ul>
-          <li><a href="#terms" on:click|preventDefault>Terms of Service</a></li>
-          <li><a href="#privacy" on:click|preventDefault>Privacy</a></li>
-          <li><a href="#contact" on:click|preventDefault>Contact</a></li>
-        </ul>
-      </section>
+      {#each columns as col}
+        <section>
+          <p class="site-footer__col-heading">{col.heading}</p>
+          <ul>
+            {#each col.items as item}
+              <li><span class="site-footer__item">{item}</span></li>
+            {/each}
+          </ul>
+        </section>
+      {/each}
     </div>
     <p class="site-footer__fineprint">
-      © {year} The Daily Record. A work of fiction. All articles and imagery
+      © {year} The Proper Goose. A work of fiction. All articles and imagery
       are made up for the purposes of a Ludum Dare Compo entry.
     </p>
   </div>
@@ -66,7 +66,7 @@
     margin-bottom: var(--space-6);
   }
 
-  h5 {
+  .site-footer__col-heading {
     font-family: var(--font-display);
     font-size: var(--text-xs);
     text-transform: uppercase;
@@ -84,15 +84,10 @@
     gap: var(--space-2);
   }
 
-  a {
+  .site-footer__item {
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     color: var(--color-ink-soft);
-    border-bottom: none;
-  }
-
-  a:hover,
-  a:focus-visible {
-    color: var(--color-ink-strong);
   }
 
   .site-footer__fineprint {

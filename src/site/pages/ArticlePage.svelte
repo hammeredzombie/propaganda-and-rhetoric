@@ -16,6 +16,16 @@
     body: 'A new policy for a new climate.',
     size: 'small'
   };
+
+  function splitLede(text) {
+    const idx = text.search(/\p{L}/u);
+    if (idx < 0) return { pre: '', drop: '', rest: text };
+    return {
+      pre: text.slice(0, idx),
+      drop: text.slice(idx, idx + 1),
+      rest: text.slice(idx + 1)
+    };
+  }
 </script>
 
 {#if article}
@@ -33,16 +43,19 @@
     {#if article.image}
       <figure class="article__lede-image" aria-hidden="true">
         <div class="article__image-placeholder">
-          <span>[illustration]</span>
-          <small>{article.image}</small>
+          <span class="article__image-mark">§</span>
         </div>
-        <figcaption>Illustration to be created in Procreate during the jam.</figcaption>
       </figure>
     {/if}
 
     <div class="article__body">
       {#each article.body || [] as para, i}
-        <p class="article__para" class:article__para--lede={i === 0}>{para}</p>
+        {#if i === 0}
+          {@const lede = splitLede(para)}
+          <p class="article__para article__para--lede">{lede.pre}<span class="article__drop">{lede.drop}</span>{lede.rest}</p>
+        {:else}
+          <p class="article__para">{para}</p>
+        {/if}
         {#if i === 1 && article.pullquote}
           <PullQuote quote={article.pullquote.quote} attribution={article.pullquote.attribution} />
         {/if}
@@ -55,7 +68,7 @@
     <footer class="article__footer">
       <hr />
       <p class="article__end">
-        The Daily Record. <em>All the news that stays on-message.</em>
+        The Proper Goose. <em>Take a Gander at the daily News.</em>
       </p>
     </footer>
   </article>
@@ -80,10 +93,17 @@
     text-transform: uppercase;
     letter-spacing: 0.14em;
     color: var(--color-ink-muted);
-    margin-bottom: var(--space-4);
+    padding: var(--space-2) 0;
+    margin-bottom: var(--space-3);
   }
 
   .article__back:hover {
+    color: var(--color-ink-strong);
+  }
+
+  .article__back:focus-visible {
+    outline: 2px solid var(--color-ink-strong);
+    outline-offset: 2px;
     color: var(--color-ink-strong);
   }
 
@@ -96,39 +116,15 @@
     background: var(--color-ad-bg);
     border: 1px solid var(--color-rule);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-1);
-    color: var(--color-ink-muted);
+  }
+
+  .article__image-mark {
     font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    text-align: center;
-    padding: var(--space-4);
-  }
-
-  .article__image-placeholder small {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: var(--text-xxs);
-    text-transform: none;
-    letter-spacing: 0;
-    font-style: italic;
-    opacity: 0.7;
-  }
-
-  figcaption {
-    font-family: var(--font-body);
-    font-style: italic;
-    font-size: var(--text-xs);
+    font-size: var(--text-2xl);
     color: var(--color-ink-muted);
-    text-transform: none;
-    letter-spacing: 0;
-    margin-top: var(--space-2);
-    text-align: center;
+    line-height: 1;
   }
 
   .article__body {
@@ -144,7 +140,7 @@
     margin: 0 0 var(--space-4);
   }
 
-  .article__para--lede::first-letter {
+  .article__drop {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 3.5em;
