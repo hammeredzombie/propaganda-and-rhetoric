@@ -3,8 +3,8 @@
   export let size = 'medium';
   export let onOpen = () => {};
 
-  function open() {
-    onOpen(article);
+  function open(event) {
+    onOpen(article, event);
   }
 </script>
 
@@ -15,13 +15,14 @@
     {/if}
     {#if article.image}
       <div class="card__image" aria-hidden="true">
-        <div class="card__image-placeholder">
-          <span>[illustration]</span>
-          <small>{article.image}</small>
-        </div>
+        <span class="card__image-mark">§</span>
       </div>
     {/if}
-    <h2 class="card__headline">{article.headline}</h2>
+    {#if size === 'hero'}
+      <h1 class="card__headline">{article.headline}</h1>
+    {:else}
+      <h2 class="card__headline">{article.headline}</h2>
+    {/if}
     {#if article.dek}
       <p class="card__dek">{article.dek}</p>
     {/if}
@@ -56,17 +57,11 @@
     color: inherit;
     font: inherit;
     cursor: pointer;
-    transition: transform 180ms ease;
-  }
-
-  .card__hit:hover {
-    transform: translateY(-1px);
   }
 
   .card__hit:focus-visible {
     outline: 2px solid var(--color-ink-strong);
     outline-offset: 2px;
-    transform: translateY(-1px);
   }
 
   .card__hit:hover .card__headline,
@@ -79,44 +74,24 @@
     aspect-ratio: 3 / 2;
     background: var(--color-ad-bg);
     border: 1px solid var(--color-rule);
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
   }
 
-  .card__image-placeholder {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-ink-muted);
+  .card__image-mark {
     font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    gap: var(--space-1);
-    padding: var(--space-3);
-    text-align: center;
-  }
-
-  .card__image-placeholder small {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: var(--text-xxs);
-    text-transform: none;
-    letter-spacing: 0;
-    font-style: italic;
-    opacity: 0.65;
-    max-width: 100%;
+    font-size: var(--text-xl);
+    color: var(--color-ink-muted);
+    line-height: 1;
   }
 
   .card__headline {
     font-family: var(--font-display);
     font-weight: 700;
     color: var(--color-ink);
-    transition: color 150ms ease;
+    margin: 0 0 var(--space-2);
   }
 
   .card--hero .card__headline {
