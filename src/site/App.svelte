@@ -7,10 +7,12 @@
   import { route } from './game/router.js';
 </script>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <Masthead />
 <Nav />
 
-<main class="site-main">
+<main id="main" class="site-main" tabindex="-1">
   {#if $route.name === 'article'}
     <ArticlePage id={$route.params.id} />
   {:else}
@@ -19,8 +21,6 @@
 </main>
 
 <Footer />
-
-<canvas id="fx-overlay" aria-hidden="true"></canvas>
 
 <style>
   .site-main {
@@ -34,14 +34,5 @@
       max-width: 1120px;
       padding: var(--space-6) var(--space-6) var(--space-8);
     }
-  }
-
-  #fx-overlay {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
   }
 </style>
