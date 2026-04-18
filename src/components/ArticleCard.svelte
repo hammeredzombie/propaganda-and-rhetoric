@@ -8,42 +8,56 @@
   }
 </script>
 
-<article class="card card--{size}" on:click={open} on:keydown={(e) => e.key === 'Enter' && open()} role="button" tabindex="0">
-  {#if article.section}
-    <div class="eyebrow">{article.section}</div>
-  {/if}
-  {#if article.image}
-    <div class="card__image" aria-hidden="true">
-      <div class="card__image-placeholder">
-        <span>[illustration]</span>
-        <small>{article.image}</small>
+<article class="card card--{size}">
+  <button class="card__hit" type="button" on:click={open}>
+    {#if article.section}
+      <div class="eyebrow">{article.section}</div>
+    {/if}
+    {#if article.image}
+      <div class="card__image" aria-hidden="true">
+        <div class="card__image-placeholder">
+          <span>[illustration]</span>
+          <small>{article.image}</small>
+        </div>
       </div>
-    </div>
-  {/if}
-  <h2 class="card__headline">{article.headline}</h2>
-  {#if article.dek}
-    <p class="card__dek">{article.dek}</p>
-  {/if}
-  {#if article.byline}
-    <p class="card__byline">By <strong>{article.byline}</strong></p>
-  {/if}
+    {/if}
+    <h2 class="card__headline">{article.headline}</h2>
+    {#if article.dek}
+      <p class="card__dek">{article.dek}</p>
+    {/if}
+    {#if article.byline}
+      <p class="card__byline">By <strong>{article.byline}</strong></p>
+    {/if}
+  </button>
 </article>
 
 <style>
   .card {
-    cursor: pointer;
     padding: var(--space-4) 0;
     border-top: 1px solid var(--color-rule);
+  }
+
+  .card__hit {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
     transition: transform 180ms ease;
   }
 
-  .card:hover,
-  .card:focus-visible {
+  .card__hit:hover,
+  .card__hit:focus-visible {
     outline: none;
     transform: translateY(-1px);
   }
 
-  .card:hover .card__headline {
+  .card__hit:hover .card__headline,
+  .card__hit:focus-visible .card__headline {
     color: var(--color-accent);
   }
 
