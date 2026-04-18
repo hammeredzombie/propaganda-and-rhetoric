@@ -80,8 +80,7 @@ typing `padding: 18px`, reach for a token instead.
 
 Defined in `global.css`, usable from any component:
 
-- **`.eyebrow`** — small uppercase red label. Used for section tags
-  and cutscene labels.
+- **`.eyebrow`** — small uppercase red label. Used for section tags.
 - **`.rule--strong`** — 2px top border. Marks section transitions
   on the front page.
 
