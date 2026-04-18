@@ -6,6 +6,10 @@ import { fx } from './game/fx.js';
 
 state.load();
 
+audio.register('cutscene_tick', { src: [] });
+audio.register('article_open', { src: [] });
+audio.register('ambient', { src: [], loop: true, volume: 0.4 });
+
 const app = new App({
   target: document.getElementById('app')
 });
