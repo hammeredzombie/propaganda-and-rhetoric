@@ -32,6 +32,7 @@ func _ready() -> void:
 	_apply_placeholder_materials()
 	await get_tree().process_frame
 	nav_region.bake_navigation_mesh()
+	GamePopup.show_start()
 
 
 func _spawn_wall_posters() -> void:

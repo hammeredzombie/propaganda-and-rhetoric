@@ -16,6 +16,11 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	Dialogue.opened.connect(_on_dialogue_opened)
 	Dialogue.closed.connect(_on_dialogue_closed)
+	CorkboardPopup.opened.connect(_on_dialogue_opened)
+	CorkboardPopup.closed.connect(_on_dialogue_closed)
+	GamePopup.started.connect(_on_dialogue_closed)
+	_input_locked = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	interact_ray.target_position = Vector3(0, 0, -interact_range)
 
 

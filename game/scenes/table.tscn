@@ -11,6 +11,7 @@ script = ExtResource("1_table")
 
 [node name="Sprite" type="Sprite3D" parent="."]
 texture = ExtResource("2_tex")
+flip_h = true
 pixel_size = 0.003306452
 billboard = 0
 shaded = false

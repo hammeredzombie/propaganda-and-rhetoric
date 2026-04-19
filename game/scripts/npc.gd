@@ -1,6 +1,8 @@
 class_name NPC
 extends CharacterBody3D
 
+enum NpcColor { RED, BLUE }
+
 ## Random-wandering billboard NPC. Assign a Texture2D in the Inspector for the
 ## sprite; if none is supplied a placeholder is generated at runtime so the
 ## scene is usable before any Procreate PNGs exist.
@@ -9,12 +11,15 @@ extends CharacterBody3D
 ## and walls are StaticBodies; the capsule slides around them.
 ##
 ## Left-click (via player raycast) shows a short overhead dialogue panel; each
-## NPC alternates the line independently on each click.
+## NPC alternates Mommy / Daddy independently on each click. Assign
+## `audio_mommy` and `audio_daddy` per NPC (red and blue use different clips).
 
+@export var npc_color: NpcColor = NpcColor.RED
 @export var display_name: String = "Stranger"
 @export_multiline var dialogue_line: String = "Hello, friend. The air here tastes like tin."
 @export var sprite_texture: Texture2D
-@export var sprite_tint: Color = Color(0.85, 0.25, 0.35)
+@export var audio_mommy: AudioStream
+@export var audio_daddy: AudioStream
 
 @export var move_speed: float = 1.8
 @export var wander_radius: float = 6.0
@@ -26,9 +31,12 @@ extends CharacterBody3D
 const BUBBLE_DURATION_SEC := 3.0
 const LINE_MOMMY := "\"Mommy...?\""
 const LINE_DADDY := "\"Daddy...?\""
+const TINT_RED := Color(0.85, 0.25, 0.35)
+const TINT_BLUE := Color(0.28, 0.45, 0.88)
 
 @onready var sprite: Sprite3D = $Sprite
 @onready var wait_timer: Timer = $WaitTimer
+@onready var voice: AudioStreamPlayer3D = $Voice
 
 var _home: Vector3
 var _wander_target: Vector3
@@ -45,7 +53,7 @@ func _ready() -> void:
 	if sprite_texture:
 		sprite.texture = sprite_texture
 	else:
-		sprite.texture = PlaceholderTexture.make_npc(sprite_tint)
+		sprite.texture = PlaceholderTexture.make_npc(_placeholder_tint())
 	sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	sprite.pixel_size = 0.02
 	sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
@@ -173,21 +181,51 @@ func _setup_head_bubble() -> void:
 	_bubble_sprite = spr
 
 
-func interact(_who: Node) -> void:
+func interact(_who: Node, _hit_point: Vector3 = Vector3.ZERO) -> void:
 	_idle = true
 	wait_timer.stop()
 	velocity.x = 0.0
 	velocity.z = 0.0
 
+	if voice.playing:
+		voice.stop()
+	if voice.finished.is_connected(_on_voice_finished):
+		voice.finished.disconnect(_on_voice_finished)
+
 	var line := LINE_MOMMY if _next_line_is_mommy else LINE_DADDY
+	var clip: AudioStream = audio_mommy if _next_line_is_mommy else audio_daddy
 	_next_line_is_mommy = not _next_line_is_mommy
+
 	_bubble_label.text = line
 	_bubble_sprite.visible = true
 	_bubble_timer.stop()
-	_bubble_timer.start()
+
+	if clip:
+		voice.stream = clip
+		voice.play()
+		voice.finished.connect(_on_voice_finished, CONNECT_ONE_SHOT)
+	else:
+		_bubble_timer.wait_time = BUBBLE_DURATION_SEC
+		_bubble_timer.start()
 
 
 func _on_bubble_timeout() -> void:
+	_end_interact_line()
+
+
+func _on_voice_finished() -> void:
+	_end_interact_line()
+
+
+func _end_interact_line() -> void:
 	_bubble_sprite.visible = false
 	_bubble_label.text = ""
 	_start_waiting()
+
+
+func color_key() -> String:
+	return "red" if npc_color == NpcColor.RED else "blue"
+
+
+func _placeholder_tint() -> Color:
+	return TINT_RED if npc_color == NpcColor.RED else TINT_BLUE
