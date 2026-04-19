@@ -53,14 +53,11 @@
     {#if article.section}
       <div class="card__eyebrow">{article.section}</div>
     {/if}
-    {#if article.image}
-      <div class="card__image" aria-hidden="true">
-        <span class="card__image-mark">§</span>
-      </div>
-    {/if}
     <h2 class="card__headline">{article.headline}</h2>
     {#if article.dek}
-      <p class="card__dek">{article.dek}</p>
+      <p class="card__dek">{#if article.dateline}<span class="card__dateline">{article.dateline}</span><span class="card__dateline-dash"> — </span>{/if}{article.dek}</p>
+    {:else if article.dateline}
+      <p class="card__dateline-line"><span class="card__dateline">{article.dateline}</span></p>
     {/if}
     {#if article.byline}
       <p class="card__byline">
@@ -290,23 +287,6 @@
     padding: 3px var(--space-3) 2px;
   }
 
-  .card__image {
-    margin: var(--space-2) 0 var(--space-3);
-    aspect-ratio: 4 / 3;
-    background: var(--color-gold);
-    border: 1px solid var(--color-ink-strong);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .card__image-mark {
-    font-family: var(--font-display);
-    font-size: var(--text-2xl);
-    color: var(--color-ink-strong);
-    line-height: 1;
-  }
-
   .card__headline {
     font-family: var(--font-display);
     font-weight: 700;
@@ -340,6 +320,31 @@
 
   .card--large .card__dek {
     font-size: var(--text-base);
+  }
+
+  /* Dateline opener — "LOREM IPSUM, APR. 18 — " in small caps display face,
+     set upright even when embedded inside the italic deck. */
+  .card__dateline {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-style: normal;
+    font-size: 0.92em;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-ink-strong);
+    font-feature-settings: "lnum", "kern";
+  }
+
+  .card__dateline-dash {
+    font-style: normal;
+    color: var(--color-ink-strong);
+  }
+
+  .card__dateline-line {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    margin: 0;
   }
 
   .card__byline {

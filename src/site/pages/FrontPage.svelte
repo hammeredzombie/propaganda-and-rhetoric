@@ -74,11 +74,12 @@
 
 <style>
   /* Broadsheet rhythm: keep sections tight, let the rules do the talking.
-     No card gutters — adjacent elements touch, separated only by rules. */
+     No card gutters — adjacent elements touch, separated only by rules.
+     The first element (civic-defence strip) sits flush against the nav
+     band so the top-of-page reads as doubled rule, not as a web gap. */
   .front {
     display: grid;
     gap: var(--space-5);
-    margin-top: var(--space-4);
   }
 
   /* Override default card border-top under the hero — the hero band
@@ -92,7 +93,6 @@
      right on fullscreen. Below 1100px the rail drops into flow. */
   .front__lead {
     display: grid;
-    grid-template-columns: 1fr;
     gap: var(--space-5);
   }
 

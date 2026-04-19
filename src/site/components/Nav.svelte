@@ -1,25 +1,40 @@
 <script>
-  const sections = [
-    'Home',
-    'Politics',
-    'World',
-    'Business',
-    'Opinion',
-    'Culture',
-    'Science',
-    'Obituaries'
+  import { route, navigate } from '../game/router.js';
+
+  const items = [
+    { label: 'Home', slug: 'home' },
+    { label: 'Politics', slug: 'politics' },
+    { label: 'World', slug: 'world' },
+    { label: 'Business', slug: 'business' },
+    { label: 'Opinion', slug: 'opinion' },
+    { label: 'Culture', slug: 'culture' },
+    { label: 'Science', slug: 'science' },
+    { label: 'Obituaries', slug: 'obituaries' }
   ];
+
+  function handleClick(event, slug) {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    navigate(slug);
+  }
 </script>
 
-<div class="site-nav" aria-hidden="true">
+<nav class="site-nav" aria-label="Sections">
   <ul>
-    {#each sections as section, i}
+    {#each items as item}
+      {@const current = $route === item.slug}
       <li>
-        <span class="site-nav__item" class:site-nav__item--current={i === 0}>{section}</span>
+        <a
+          href={`#/${item.slug}`}
+          class="site-nav__item"
+          class:site-nav__item--current={current}
+          aria-current={current ? 'page' : undefined}
+          on:click={(e) => handleClick(e, item.slug)}
+        >{item.label}</a>
       </li>
     {/each}
   </ul>
-</div>
+</nav>
 
 <style>
   .site-nav {
@@ -56,6 +71,19 @@
     text-transform: uppercase;
     letter-spacing: 0.14em;
     color: var(--color-ink);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 120ms ease, color 120ms ease;
+  }
+
+  .site-nav__item:hover {
+    background: var(--color-ink-strong);
+    color: var(--color-paper);
+  }
+
+  .site-nav__item:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
   }
 
   .site-nav__item--current {
@@ -63,6 +91,11 @@
     color: var(--color-paper);
     padding-left: var(--space-4);
     padding-right: var(--space-4);
+  }
+
+  .site-nav__item--current:hover {
+    background: var(--color-navy);
+    color: var(--color-paper);
   }
 
   @media (max-width: 720px) {

@@ -22,20 +22,17 @@ as `var(--token-name)` anywhere.
 
 /* Recruitment-poster chrome — see .impeccable.md slot table */
 --color-accent:       /* ring red — banners, stamps, date rule */
---color-accent-soft:  /* drift-state deep red */
 --color-navy:         /* wartime navy — kickers, cartouches, nav-current */
---color-navy-deep:    /* drift-state deep navy */
+--color-navy-deep:    /* deep navy — pull-quote attribution */
 --color-gold:         /* mustard — pullquote ground, ad label, ornaments */
---color-gold-deep:    /* burnt orange — drift state */
+--color-gold-deep:    /* burnt orange — ad signatures, deep accents */
 
 --color-link:         /* body-ink link color */
---color-censor:       /* blackout bars (drift only) */
 ```
 
-Primitives (`--paper-*`, `--ink-*`, `--accent*`, `--gold*`, `--navy*`)
-stay stable; the `--color-*` aliases rebind under
-`:root[data-drift="…"]` so the paper mutates as the game advances.
-Don't hardcode hex in components.
+Primitives (`--paper-base`, `--ink-*`, `--accent`, `--gold*`, `--navy*`)
+are the canonical values; the `--color-*` aliases are what components
+read. Don't hardcode hex in components.
 
 ### Fonts
 
@@ -170,14 +167,11 @@ the easy path for a static host) and switch on it in `App.svelte`.
 
 ## Placeholder images
 
-All placeholder imagery is CSS (a beige box with a text label). This
-keeps the build runnable without any art. Swap the placeholder divs
-for `<img>` tags when Procreate exports land.
-
-Check:
-- `ArticleCard.svelte` — `.card__image`
-- `AdSlot.svelte` — uses no image, pure type; can take one if you
-  want branded ad art.
+The site ships with no image elements. Article data carries an `image`
+description field reserved for future use; `AdSlot` compositions are
+pure type. When Procreate exports land, add an `<img>` render branch
+to `ArticleCard.svelte` (see `docs/architecture.md` → "Where to plug
+in real art"). Ad variants can take branded art on the same pattern.
 
 ## Dark mode / theme variants
 

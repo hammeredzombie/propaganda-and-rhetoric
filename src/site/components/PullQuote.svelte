@@ -30,7 +30,7 @@
     line-height: var(--leading-snug);
     color: var(--color-ink);
     margin: 0 0 var(--space-3);
-    text-align: center;
+    text-align: left;
   }
 
   cite {
@@ -42,6 +42,6 @@
     text-transform: uppercase;
     letter-spacing: 0.18em;
     color: var(--color-navy-deep);
-    text-align: center;
+    text-align: left;
   }
 </style>
