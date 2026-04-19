@@ -18,7 +18,7 @@ source of truth.
   dek: '...',                        // Subhead / deck
   byline: 'M. Delacroix',            // Author name
   role: 'Capitol Correspondent',     // Optional; empty string hides it
-  date: 'April 18',                  // Display date
+  date: 'April 1',                  // Display date
   readTime: '4 min read',            // Optional
   image: 'front steps of a gov…',    // Placeholder caption
   body: [                            // Array of paragraphs
@@ -49,7 +49,7 @@ export const articles = [
     dek: 'The full disclosure, aides clarified, will be at the end of this quarter.',
     byline: 'J. Alvarado',
     role: 'City Desk',
-    date: 'April 18',
+    date: 'April 1',
     readTime: '3 min read',
     image: 'mayor at a podium, lights glaring',
     body: [

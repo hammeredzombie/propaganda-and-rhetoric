@@ -35,10 +35,9 @@ are orchestrated by the `fx/` state machine; see `src/site/fx/README.md`.
 
 1. Import global CSS
 2. `state.load()` — rehydrate from localStorage or seed fresh
-3. Subscribe drift stage → `data-drift` attribute on `:root`
-4. Register audio sprites (fake sources for now)
-5. Mount the Svelte `App`
-6. Initialise audio (autoplay-unlock listener)
+3. Register audio sprites (fake sources for now)
+4. Mount the Svelte `App`
+5. Initialise audio (autoplay-unlock listener)
 
 ## File layout
 
@@ -103,7 +102,21 @@ animation library changes, nothing else changes.
 
 ## Routing
 
-There is no router. The site is a single static front page.
+A minimal hash-based router (`game/router.js`) drives page selection.
+`App.svelte` reads the `route` store and mounts one of:
+
+- `FrontPage` when the hash is empty or `#/home`
+- `SectionPage` for any of the seven standing sections
+  (`#/politics`, `#/world`, `#/business`, `#/opinion`, `#/culture`,
+  `#/science`, `#/obituaries`) — all seven share the same component,
+  with per-section data defined in `game/sections.js`
+- `UnauthorizedPage` for `#/unauthorized` or any unknown hash
+
+Hash routing is deliberate: the site ships as plain static files with
+no SPA fallback required from the host (Cloudflare Pages, LD embed,
+`file://` preview — all work unchanged).  `Masthead`, `Nav`, and
+`Footer` stay mounted across route changes, so any future app-wide
+singletons (Pixi overlay, Howler instance, `fx/` FSM) persist.
 
 ## Rendering order
 
@@ -125,7 +138,9 @@ If you're triggering music or SFX on page load, hook into
 
 ## Where to plug in real art
 
-Right now every visual asset is a CSS-drawn placeholder box with a
-label like `[illustration]`. Find these in `ArticleCard.svelte`
-(`.card__image`). Swap the div for an `<img src="./assets/art/foo.webp">`
-when real Procreate exports land.
+Secondary cards currently render headline + dek only — no image slot.
+Article data carries an `image` description field (e.g. `'front steps
+of a government building at dusk'`) reserved for later use. When real
+Procreate exports land, add an `<img>` render branch to `ArticleCard.svelte`
+that consumes `article.image`, and size it per the brief's
+"≤ 140 px tall above the fold" rule.
