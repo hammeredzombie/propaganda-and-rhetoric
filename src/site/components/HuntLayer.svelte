@@ -3,11 +3,18 @@
   import { route } from '../game/router.js';
   import { selectRandomWord } from '../game/hunt.js';
   import { hints } from '../game/hints.js';
-  import { openHint } from '../game/huntStore.js';
+  import { openHint, activeHint } from '../game/huntStore.js';
 
   let current = null;
+  let wasOpen = false;
 
   $: reseed($route);
+
+  const unsubscribe = activeHint.subscribe((value) => {
+    const nowOpen = value !== null;
+    if (wasOpen && !nowOpen) reseed($route);
+    wasOpen = nowOpen;
+  });
 
   async function reseed(activeRoute) {
     if (typeof document === 'undefined') return;
@@ -33,6 +40,7 @@
   }
 
   onDestroy(() => {
+    unsubscribe();
     if (current) current.cleanup();
   });
 </script>
