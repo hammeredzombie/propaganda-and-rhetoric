@@ -93,7 +93,6 @@
      right on fullscreen. Below 1100px the rail drops into flow. */
   .front__lead {
     display: grid;
-    grid-template-columns: 1fr;
     gap: var(--space-5);
   }
 

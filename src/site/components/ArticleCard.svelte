@@ -305,6 +305,10 @@
     font-size: var(--text-md);
   }
 
+  .card--small .card__headline {
+    font-size: var(--text-base);
+  }
+
   .card__dek {
     font-family: var(--font-body);
     font-style: italic;

@@ -34,7 +34,7 @@
       </li>
     {/each}
   </ul>
-</nav>
+</div>
 
 <style>
   .site-nav {
