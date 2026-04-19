@@ -4,6 +4,9 @@ extends CharacterBody3D
 ## Random-wandering billboard NPC. Assign a Texture2D in the Inspector for the
 ## sprite; if none is supplied a placeholder is generated at runtime so the
 ## scene is usable before any Procreate PNGs exist.
+##
+## Movement is direct steering + move_and_slide (no NavigationAgent). Tables
+## and walls are StaticBodies; the capsule slides around them.
 
 @export var display_name: String = "Stranger"
 @export_multiline var dialogue_line: String = "Hello, friend. The air here tastes like tin."
@@ -14,12 +17,14 @@ extends CharacterBody3D
 @export var wander_radius: float = 6.0
 @export var wait_time_min: float = 1.0
 @export var wait_time_max: float = 3.5
+@export var arrival_distance: float = 0.5
+@export var gravity: float = 20.0
 
 @onready var sprite: Sprite3D = $Sprite
-@onready var agent: NavigationAgent3D = $NavigationAgent
 @onready var wait_timer: Timer = $WaitTimer
 
 var _home: Vector3
+var _wander_target: Vector3
 var _idle: bool = true
 
 
@@ -35,49 +40,42 @@ func _ready() -> void:
 	sprite.shaded = false
 	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
 
-	agent.path_desired_distance = 0.4
-	agent.target_desired_distance = 0.4
-	agent.avoidance_enabled = false
-
 	wait_timer.timeout.connect(_pick_new_target)
-	await get_tree().create_timer(0.6).timeout
+	await get_tree().process_frame
 	_pick_new_target()
 
 
-func _physics_process(_delta: float) -> void:
-	if _idle or agent.is_navigation_finished():
-		velocity = Vector3.ZERO
-		if not _idle:
+func _physics_process(delta: float) -> void:
+	if _idle:
+		velocity.x = 0.0
+		velocity.z = 0.0
+	else:
+		var to_target := _wander_target - global_position
+		to_target.y = 0.0
+		if to_target.length() <= arrival_distance:
+			velocity.x = 0.0
+			velocity.z = 0.0
 			_start_waiting()
-		move_and_slide()
-		return
+		else:
+			var dir := to_target.normalized()
+			velocity.x = dir.x * move_speed
+			velocity.z = dir.z * move_speed
+			look_at(global_position + Vector3(dir.x, 0.0, dir.z), Vector3.UP)
 
-	var next := agent.get_next_path_position()
-	var dir := (next - global_position)
-	dir.y = 0
-	if dir.length() > 0.001:
-		dir = dir.normalized()
-		velocity.x = dir.x * move_speed
-		velocity.z = dir.z * move_speed
-		var look := global_position + Vector3(dir.x, 0, dir.z)
-		look_at(look, Vector3.UP)
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	else:
+		velocity.y = 0.0
+
 	move_and_slide()
 
 
 func _pick_new_target() -> void:
-	var attempts := 8
-	while attempts > 0:
-		attempts -= 1
-		var angle := randf() * TAU
-		var dist := randf_range(1.5, wander_radius)
-		var candidate := _home + Vector3(cos(angle) * dist, 0, sin(angle) * dist)
-		var map := get_world_3d().navigation_map
-		var snapped := NavigationServer3D.map_get_closest_point(map, candidate)
-		if snapped.distance_to(candidate) < 1.5:
-			agent.target_position = snapped
-			_idle = false
-			return
-	_start_waiting()
+	var angle := randf() * TAU
+	var dist := randf_range(1.5, wander_radius)
+	_wander_target = _home + Vector3(cos(angle) * dist, 0.0, sin(angle) * dist)
+	_wander_target.y = _home.y
+	_idle = false
 
 
 func _start_waiting() -> void:
@@ -89,7 +87,8 @@ func _start_waiting() -> void:
 func interact(_who: Node) -> void:
 	_idle = true
 	wait_timer.stop()
-	velocity = Vector3.ZERO
+	velocity.x = 0.0
+	velocity.z = 0.0
 	Dialogue.show_line(dialogue_line, display_name)
 	if not Dialogue.closed.is_connected(_resume_after_dialogue):
 		Dialogue.closed.connect(_resume_after_dialogue, CONNECT_ONE_SHOT)

@@ -1,14 +1,17 @@
-[gd_scene format=3 uid="uid://dxq1demoaa"]
+[gd_scene format=3 uid="uid://ceb4vhxvshitc"]
 
-[ext_resource type="Script" path="res://game/scripts/demo.gd" id="1_demo"]
-[ext_resource type="PackedScene" uid="uid://dxq1playera" path="res://game/scenes/player.tscn" id="2_player"]
-[ext_resource type="PackedScene" uid="uid://dxq1npca" path="res://game/scenes/npc.tscn" id="3_npc"]
+[ext_resource type="Script" uid="uid://hyl7akrv4qrl" path="res://game/scripts/demo.gd" id="1_demo"]
+[ext_resource type="PackedScene" path="res://game/scenes/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://game/scenes/npc.tscn" id="3_npc"]
+[ext_resource type="PackedScene" path="res://game/scenes/table.tscn" id="4_table"]
+[ext_resource type="PackedScene" path="res://game/scenes/table_head_on.tscn" id="5_table_head_on"]
+[ext_resource type="Texture2D" path="res://game/assets/sprites/corkboard.png" id="6_corkboard"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
-sky_horizon_color = Color(0.08, 0.08, 0.1, 1)
 sky_top_color = Color(0.02, 0.02, 0.05, 1)
-ground_horizon_color = Color(0.08, 0.08, 0.1, 1)
+sky_horizon_color = Color(0.08, 0.08, 0.1, 1)
 ground_bottom_color = Color(0.02, 0.02, 0.02, 1)
+ground_horizon_color = Color(0.08, 0.08, 0.1, 1)
 
 [sub_resource type="Sky" id="Sky_env"]
 sky_material = SubResource("ProceduralSkyMaterial_sky")
@@ -21,106 +24,166 @@ ambient_light_color = Color(0.6, 0.6, 0.7, 1)
 ambient_light_energy = 0.35
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_nav"]
-geometry_parsed_geometry_type = 2
-agent_radius = 0.45
-agent_height = 1.6
 cell_size = 0.2
 cell_height = 0.15
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_floor"]
-size = Vector2(20, 20)
+agent_height = 1.6
+agent_radius = 0.45
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(20, 0.2, 20)
 
-[sub_resource type="BoxMesh" id="BoxMesh_wall_ns"]
-size = Vector3(20, 3, 0.4)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns"]
-size = Vector3(20, 3, 0.4)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
-size = Vector3(0.4, 3, 20)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
-size = Vector3(0.4, 3, 20)
+[sub_resource type="PlaneMesh" id="PlaneMesh_floor"]
+size = Vector2(20, 20)
 
 [sub_resource type="BoxMesh" id="BoxMesh_ceiling"]
 size = Vector3(20, 0.2, 20)
 
-[node name="Demo" type="Node3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns"]
+size = Vector3(20, 3, 0.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ns"]
+size = Vector3(20, 3, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
+size = Vector3(0.4, 3, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
+size = Vector3(0.4, 3, 20)
+
+[node name="Demo" type="Node3D" unique_id=1230102775]
 script = ExtResource("1_demo")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=365644676]
 environment = SubResource("Environment_env")
 
-[node name="Sun" type="DirectionalLight3D" parent="."]
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1583000052]
 transform = Transform3D(0.8, -0.3, 0.52, 0, 0.87, 0.5, -0.6, -0.4, 0.69, 0, 8, 0)
 light_energy = 0.6
 shadow_enabled = true
 
-[node name="NavRegion" type="NavigationRegion3D" parent="."]
+[node name="NavRegion" type="NavigationRegion3D" parent="." unique_id=528414535]
 navigation_mesh = SubResource("NavigationMesh_nav")
 
-[node name="Floor" type="StaticBody3D" parent="NavRegion"]
+[node name="Floor" type="StaticBody3D" parent="NavRegion" unique_id=1858002356]
 
-[node name="Shape" type="CollisionShape3D" parent="NavRegion/Floor"]
+[node name="Shape" type="CollisionShape3D" parent="NavRegion/Floor" unique_id=46526038]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 shape = SubResource("BoxShape3D_floor")
 
-[node name="Mesh" type="MeshInstance3D" parent="NavRegion/Floor"]
+[node name="Mesh" type="MeshInstance3D" parent="NavRegion/Floor" unique_id=922673394]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.013326168, 0.111927986, -0.06239605)
 mesh = SubResource("PlaneMesh_floor")
 
-[node name="Ceiling" type="MeshInstance3D" parent="NavRegion"]
+[node name="Ceiling" type="MeshInstance3D" parent="NavRegion" unique_id=680841834]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, 0)
 mesh = SubResource("BoxMesh_ceiling")
 
-[node name="WallN" type="StaticBody3D" parent="NavRegion"]
+[node name="WallN" type="StaticBody3D" parent="NavRegion" unique_id=1906918313]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -10)
 
-[node name="Shape" type="CollisionShape3D" parent="NavRegion/WallN"]
+[node name="Shape" type="CollisionShape3D" parent="NavRegion/WallN" unique_id=1030276855]
 shape = SubResource("BoxShape3D_wall_ns")
 
-[node name="Mesh" type="MeshInstance3D" parent="NavRegion/WallN"]
+[node name="Mesh" type="MeshInstance3D" parent="NavRegion/WallN" unique_id=2009269586]
 mesh = SubResource("BoxMesh_wall_ns")
 
-[node name="WallS" type="StaticBody3D" parent="NavRegion"]
+[node name="WallS" type="StaticBody3D" parent="NavRegion" unique_id=1647279006]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 10)
 
-[node name="Shape" type="CollisionShape3D" parent="NavRegion/WallS"]
+[node name="Shape" type="CollisionShape3D" parent="NavRegion/WallS" unique_id=1508658434]
 shape = SubResource("BoxShape3D_wall_ns")
 
-[node name="Mesh" type="MeshInstance3D" parent="NavRegion/WallS"]
+[node name="Mesh" type="MeshInstance3D" parent="NavRegion/WallS" unique_id=1617735140]
 mesh = SubResource("BoxMesh_wall_ns")
 
-[node name="WallE" type="StaticBody3D" parent="NavRegion"]
+[node name="WallE" type="StaticBody3D" parent="NavRegion" unique_id=647114455]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.5, 0)
 
-[node name="Shape" type="CollisionShape3D" parent="NavRegion/WallE"]
+[node name="Shape" type="CollisionShape3D" parent="NavRegion/WallE" unique_id=1406643165]
 shape = SubResource("BoxShape3D_wall_ew")
 
-[node name="Mesh" type="MeshInstance3D" parent="NavRegion/WallE"]
+[node name="Mesh" type="MeshInstance3D" parent="NavRegion/WallE" unique_id=1094493393]
 mesh = SubResource("BoxMesh_wall_ew")
 
-[node name="WallW" type="StaticBody3D" parent="NavRegion"]
+[node name="WallW" type="StaticBody3D" parent="NavRegion" unique_id=1516028807]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.5, 0)
 
-[node name="Shape" type="CollisionShape3D" parent="NavRegion/WallW"]
+[node name="Shape" type="CollisionShape3D" parent="NavRegion/WallW" unique_id=1839735791]
 shape = SubResource("BoxShape3D_wall_ew")
 
-[node name="Mesh" type="MeshInstance3D" parent="NavRegion/WallW"]
+[node name="Mesh" type="MeshInstance3D" parent="NavRegion/WallW" unique_id=1113697939]
 mesh = SubResource("BoxMesh_wall_ew")
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="Table_BackWall" parent="NavRegion" instance=ExtResource("5_table_head_on")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0.35, 0, -9.36)
+orientation_enabled = false
+
+[node name="Corkboard" type="Sprite3D" parent="NavRegion"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0.35, 2.26, -9.76)
+texture = ExtResource("6_corkboard")
+pixel_size = 0.0027
+billboard = 0
+shaded = false
+alpha_cut = 1
+
+[node name="Table_W1" parent="NavRegion" unique_id=1951135959 instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.5, 0, 7.5)
+
+[node name="Table_W2" parent="NavRegion" unique_id=39980121 instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.5, 0, 2.5)
+
+[node name="Table_W3" parent="NavRegion" unique_id=2005411155 instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.5, 0, -2.5)
+
+[node name="Table_W4" parent="NavRegion" unique_id=637025335 instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.5, 0, -7.5)
+
+[node name="Table_M1" parent="NavRegion" unique_id=1473686410 instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5, 0, 7.5)
+
+[node name="Table_M2" parent="NavRegion" unique_id=804128269 instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5, 0, 2.5)
+
+[node name="Table_M3" parent="NavRegion" unique_id=1260388472 instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5, 0, -2.5)
+
+[node name="Table_M4" parent="NavRegion" unique_id=330458022 instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5, 0, -7.5)
+
+[node name="Table_E1" parent="NavRegion" instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.5, 0, 7.5)
+
+[node name="Table_E2" parent="NavRegion" instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.5, 0, 2.5)
+
+[node name="Table_E3" parent="NavRegion" instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.5, 0, -2.5)
+
+[node name="Table_E4" parent="NavRegion" instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.5, 0, -7.5)
+
+[node name="Table_EM1" parent="NavRegion" instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5, 0, 7.5)
+
+[node name="Table_EM2" parent="NavRegion" instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5, 0, 2.5)
+
+[node name="Table_EM3" parent="NavRegion" instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5, 0, -2.5)
+
+[node name="Table_EM4" parent="NavRegion" instance=ExtResource("4_table")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5, 0, -7.5)
+
+[node name="Player" parent="." unique_id=1501870919 instance=ExtResource("2_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
-[node name="NPC1" parent="." instance=ExtResource("3_npc")]
+[node name="NPC1" parent="." unique_id=674191367 instance=ExtResource("3_npc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -2)
 display_name = "Margot"
 dialogue_line = "You shouldn't be here. The editors are watching."
 sprite_tint = Color(0.85, 0.3, 0.35, 1)
 
-[node name="NPC2" parent="." instance=ExtResource("3_npc")]
+[node name="NPC2" parent="." unique_id=1258735111 instance=ExtResource("3_npc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3)
 display_name = "Harlan"
 dialogue_line = "I used to write for them. Now I just drift."
