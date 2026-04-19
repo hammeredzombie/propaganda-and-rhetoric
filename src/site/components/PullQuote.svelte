@@ -13,8 +13,10 @@
 <style>
   .pullquote {
     margin: var(--space-6) 0 var(--space-7);
-    padding: var(--space-4) var(--space-5) 0;
-    border-top: 1px solid var(--color-rule-strong);
+    padding: var(--space-5) var(--space-6);
+    background: var(--color-gold);
+    border-top: 4px solid var(--color-ink-strong);
+    border-bottom: 4px solid var(--color-ink-strong);
   }
 
   blockquote {
@@ -38,8 +40,8 @@
     font-style: normal;
     font-size: var(--text-xs);
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--color-ink-muted);
+    letter-spacing: 0.18em;
+    color: var(--color-navy-deep);
     text-align: center;
   }
 </style>

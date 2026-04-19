@@ -52,10 +52,8 @@ same `dist/` output.
 
 - [ ] `npm run build` runs clean
 - [ ] `npm run preview` loads without console errors
-- [ ] Every article opens from the front page
-- [ ] Back button returns to the front page
-- [ ] Refreshing on an article page still loads it (hash routing survives reload)
-- [ ] Cutscene can be skipped with Esc and click
+- [ ] `npm test` passes (fx unit tests)
+- [ ] Front page renders every card and both ad slots
 - [ ] localStorage reset does the right thing (first-time state)
 - [ ] Publication name, masthead, and all copy are fictional — no real
       outlets, mastheads, or URLs
@@ -64,23 +62,19 @@ same `dist/` output.
 
 Current gzipped sizes (subject to change as content grows):
 
-- JS: ~190 kB gzipped
+- JS: ~22 kB gzipped
 - CSS: ~3 kB gzipped
 - HTML: ~0.5 kB
 
-Pixi accounts for ~120 kB gzipped alone. Budget:
+GSAP, Pixi, and Howler are installed but unused on day one;
+registered animations may import them as needed. Only what is
+imported ships.
+
+Budget:
 
 - Under ~250 kB gzipped JS → fine on even slow connections
 - Under ~500 kB gzipped JS → fine on typical broadband
 - Above that → investigate. Readers bounce on slow first paint.
-
-Ways to shrink if needed:
-
-- Remove PixiJS (drop `pixi.js` from `package.json`, remove
-  `fx.init()`, delete `fx.js`). ~120 kB gzipped saved.
-- Remove Howler if you don't ship audio. ~8 kB gzipped saved.
-- Remove GSAP if cutscenes become CSS-only. ~15 kB gzipped saved.
-- Tree-shake PixiJS by importing only what you need.
 
 ## First-interactive budget
 
@@ -89,9 +83,6 @@ first paint:
 
 - Google Fonts — already `preconnect`ed; consider self-hosting for
   the extra ~200ms
-- The PixiJS chunk is imported from `game/fx.js` which is imported
-  from `main.js`. If boot feels slow, move `fx.init()` to after first
-  user interaction.
 - Big images — convert to WebP, lazy-load below-the-fold
 
 ## Local dry run before deploying

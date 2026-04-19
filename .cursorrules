@@ -1,0 +1,41 @@
+# Cursor rules — Propaganda and Rhetoric
+
+These rules apply across the whole repo. See `CLAUDE.md` for the full
+project context; this file exists specifically so Cursor agents stop
+"fixing" placeholder copy.
+
+## Copy policy — Lorem Ipsum is the placeholder, leave it alone
+
+The site copy is intentionally Lorem Ipsum placeholder and must stay
+that way until an explicit content freeze. Do NOT upgrade Lorem Ipsum
+to English, period-flavored, or in-fiction copy — not even as part of
+a "polish" or "design" pass. Content will be written later, on
+purpose, and premature voice-specific copy creates rework.
+
+Lorem Ipsum lives in (non-exhaustive):
+
+- `src/site/game/articles.js` — article headlines, decks, kickers,
+  datelines, ledes, body paragraphs, pull-quote text + attribution
+- `src/site/game/ads.js` — every ad's kicker, brand, headline, body,
+  footnote, signature, classifieds items
+- `src/site/pages/**/*.svelte` — any in-page section heading
+  (e.g. "Inside This Edition" is placeholder, not a real label)
+
+The ONLY committed real copy is the **site header and footer**:
+
+- `src/site/components/Masthead.svelte` — nameplate, tagline, volume,
+  date, submasthead dateline band
+- `src/site/components/Nav.svelte` — section link labels
+- `src/site/components/Footer.svelte` — column headings, fine print
+
+Functional UI strings are not editorial copy and may stay in English:
+the `Advertisement` disclosure label, coupon field labels (`Name`,
+`Street`, `Town`, `District`), the `By` byline prefix, byline
+metadata (author name, role, date, read time), the
+`Continued on Page A4, Col. 3` format marker.
+
+When adding a new component or ad variant, fill any new copy slots
+with Lorem Ipsum too — never invent prose for them. When asked to
+"make the site look better" or "add more ads," that is a layout,
+typography, and chrome task — not a copywriting task. Keep the
+placeholder in place.
