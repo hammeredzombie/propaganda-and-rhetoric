@@ -2,6 +2,8 @@
   import Masthead from './components/Masthead.svelte';
   import Nav from './components/Nav.svelte';
   import Footer from './components/Footer.svelte';
+  import HuntLayer from './components/HuntLayer.svelte';
+  import HintModal from './components/HintModal.svelte';
   import FrontPage from './pages/FrontPage.svelte';
   import SectionPage from './pages/SectionPage.svelte';
   import UnauthorizedPage from './pages/UnauthorizedPage.svelte';
@@ -25,6 +27,9 @@
 </main>
 
 <Footer />
+
+<HuntLayer />
+<HintModal />
 
 <style>
   /* No top padding — the first content rule sits flush against the nav's

@@ -234,3 +234,42 @@ hr {
     font-size: var(--text-lg);
   }
 }
+
+/* ---------- Word-hunt target ----------
+   One randomly-chosen word per page is wrapped in this span by
+   components/HuntLayer.svelte; clicking it opens the hint modal. */
+.hunt-target {
+  display: inline-block;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  transform-origin: 50% 70%;
+  animation: hunt-wiggle 0.3s ease-in-out infinite;
+  border-radius: 2px;
+  padding: 0 0.05em;
+  margin: 0 -0.05em;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.hunt-target:hover,
+.hunt-target:focus-visible {
+  background-color: var(--color-gold);
+  color: var(--color-ink-strong);
+  outline: none;
+}
+
+@keyframes hunt-wiggle {
+  0% { transform: rotate(0deg) translate(0, 0); }
+  25% { transform: rotate(-2deg) translate(-0.5px, -0.5px); }
+  50% { transform: rotate(0deg) translate(0, 0); }
+  75% { transform: rotate(2deg) translate(0.5px, 0.5px); }
+  100% { transform: rotate(0deg) translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hunt-target {
+    animation: none;
+    text-decoration: underline dotted var(--color-ink-muted);
+    text-underline-offset: 3px;
+  }
+}
