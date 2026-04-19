@@ -19,9 +19,25 @@ func _ready() -> void:
 	interact_ray.target_position = Vector3(0, 0, -interact_range)
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN and not _input_locked:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if _input_locked:
 		return
+
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			_try_interact()
+			get_viewport().set_input_as_handled()
+			return
+		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			return
 
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * mouse_sensitivity)

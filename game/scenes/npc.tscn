@@ -22,11 +22,6 @@ billboard = 1
 shaded = false
 alpha_cut = 1
 
-[node name="NavigationAgent" type="NavigationAgent3D" parent="."]
-path_desired_distance = 0.4
-target_desired_distance = 0.4
-avoidance_enabled = false
-
 [node name="WaitTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
