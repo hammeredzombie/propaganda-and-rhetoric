@@ -3,37 +3,31 @@
 ## The mental model
 
 The game is a **real website** that happens to run a game underneath
-it. Everything you see is DOM + CSS — article cards, layouts,
-typography, hover states, routing. The "game" part lives in a handful
-of JS modules and a transparent PixiJS canvas layered on top.
+it. Everything you see is DOM + CSS — article cards, layout,
+typography. The site is a single static front page; the "game" part
+lives in a handful of JS modules.
 
 ```
 +-----------------------------------------------+
 |                                               |
 |   DOM (Svelte components)                     |
 |   ─ Masthead, Nav, ArticleCard, AdSlot…       |
-|   ─ Front page + Article page                 |
-|                                               |
-|   + invisible PixiJS canvas overlay           |
-|     (particles, flashes, distortion)          |
-|                                               |
-|   + GSAP cutscene overlay (full-screen,       |
-|     shown only during cutscenes)              |
+|   ─ Front page only                           |
 |                                               |
 +-----------------------------------------------+
          ▲                         ▲
          │                         │
-  click / scroll             cutscene trigger
+  click / scroll             fx dispatch event
          │                         │
          ▼                         ▼
-   game/state.js  ◀─────▶  game/events.js  ◀─────▶  game/cutscene.js
+   game/state.js  ◀─────▶  game/events.js        fx/index.js (FSM)
          │
          ▼
     localStorage
 ```
 
-**Key idea:** the news site renders first and always. Game effects
-layer on top; they never own the layout.
+**Key idea:** the news site renders first and always. Animations
+are orchestrated by the `fx/` state machine; see `src/site/fx/README.md`.
 
 ## Entry point
 
@@ -41,12 +35,10 @@ layer on top; they never own the layout.
 
 1. Import global CSS
 2. `state.load()` — rehydrate from localStorage or seed fresh
-3. Register audio sprites (fake sources for now)
-4. Mount the Svelte `App`
-5. Initialise audio (autoplay-unlock listener) and Pixi FX overlay
-
-The Pixi overlay canvas (`<canvas id="fx-overlay">`) is declared in
-`App.svelte` and picked up by `fx.init()` after mount.
+3. Subscribe drift stage → `data-drift` attribute on `:root`
+4. Register audio sprites (fake sources for now)
+5. Mount the Svelte `App`
+6. Initialise audio (autoplay-unlock listener)
 
 ## File layout
 
@@ -54,7 +46,7 @@ Paths below are relative to `src/site/` (the site project root).
 
 ```
 main.js                  entry point
-App.svelte               masthead + nav + router + footer + fx canvas
+App.svelte               masthead + nav + front page + footer
 index.html               Vite HTML entry
 vite.config.js           Vite config (base: '/')
 styles/global.css        design tokens, typography, resets
@@ -63,20 +55,21 @@ components/              building blocks (all presentational)
   Nav.svelte             section nav
   Footer.svelte          footer
   ArticleCard.svelte     hero/large/medium/small card on front page
-  Headline.svelte        article-page headline + dek + eyebrow
+  Headline.svelte        headline + dek + eyebrow
   Byline.svelte          author, role, date, read time
   PullQuote.svelte       inline blockquote
   AdSlot.svelte          small/medium/large advertisement block
 pages/
   FrontPage.svelte       composes the front page from articles.js
-  ArticlePage.svelte     renders one article + inline ad/pullquote
+fx/
+  machine.js             FSM factory
+  registry.js            animation registry
+  index.js               singleton + dispatch + Svelte store
+  README.md              usage patterns
 game/
   state.js               Svelte store + save/load/reset
   events.js              pub/sub event bus
-  router.js              hash-based router store
   articles.js            article data (the only content file)
-  cutscene.js            GSAP overlay + library of cutscenes
-  fx.js                  PixiJS overlay + FX primitives
   audio.js               Howler wrapper + autoplay unlock
 ```
 
@@ -90,50 +83,36 @@ Three modules coordinate everything game-side:
 - Shapes: `articlesRead`, `articleOpenCount`, `cutscenesSeen`,
   `flags`, `audioUnlocked`, `firstVisitAt`, `lastVisitAt`
 - Methods: `load`, `save`, `reset`, `update`, `markArticleRead`,
-  `markCutsceneSeen`, `setFlag`, `setAudioUnlocked`
+  `setFlag`, `setAudioUnlocked`
 
 ### `events.js`
 - Minimal pub/sub (`on`, `once`, `off`, `emit`)
 - Lets subsystems talk without import cycles
 - Standard events emitted by the framework:
   - `article:read` — after `state.markArticleRead`
-  - `cutscene:start`, `cutscene:end`
   - `audio:unlocked`, `audio:play-fake`
-  - `fx:ready`
   - `state:reset`
 
-### `cutscene.js` / `fx.js` / `audio.js`
-All three consume state/events rather than orchestrating each other
-directly. This keeps them independently swappable — if you cut
-PixiJS mid-jam and replace `fx.js` with CSS filters, nothing else
-changes.
+### `fx/` and `audio.js`
+`fx/` owns a single app-wide state machine plus an animation
+registry. Components dispatch events into it; registered animations
+are invoked from state hooks (or directly by name). See
+`src/site/fx/README.md`. `audio.js` consumes state/events
+independently. This keeps both independently swappable — if the
+animation library changes, nothing else changes.
 
 ## Routing
 
-Hash-based. `router.js` exposes a readable store `route` that parses
-`window.location.hash` into `{ name, params }`. Two routes exist:
-
-- `''` or `'#/'` → `{ name: 'home' }`
-- `'#/article/<id>'` → `{ name: 'article', params: { id } }`
-
-`App.svelte` switches between `FrontPage` and `ArticlePage` based on
-`$route.name`. `goToArticle(id)` and `goHome()` are the two helpers.
-
-We don't use SvelteKit — for a single-entry static site, hash-routing
-keeps the bundle small and avoids needing server-side rewrites at the
-host.
+There is no router. The site is a single static front page.
 
 ## Rendering order
 
 1. **DOM renders first.** This is the "real" website. It's what
    players see before any JS boots.
 2. **Svelte hydrates** and wires up interactivity.
-3. **Pixi overlay initialises** on top of the DOM.
-4. **First cutscene** fires if it's the player's first visit.
-
-Cutscenes are **always** skippable (Esc, Enter, or click the
-overlay). Don't gate gameplay behind a cutscene that can't be
-escaped.
+3. **fx machine** sits in its initial `idle` state. No animations
+   are registered or triggered on day one; add them by calling
+   `register(name, fn)` and `dispatch(event, payload)`.
 
 ## Autoplay unlock
 
@@ -147,11 +126,6 @@ If you're triggering music or SFX on page load, hook into
 ## Where to plug in real art
 
 Right now every visual asset is a CSS-drawn placeholder box with a
-label like `[illustration]`. Find these in:
-
-- `ArticleCard.svelte` — `.card__image-placeholder`
-- `ArticlePage.svelte` — `.article__image-placeholder`
-
-Swap the div for an `<img src="./assets/art/foo.webp">` when real
-Procreate exports land. See [fx-and-audio.md](./fx-and-audio.md) for
-pipeline specifics.
+label like `[illustration]`. Find these in `ArticleCard.svelte`
+(`.card__image`). Swap the div for an `<img src="./assets/art/foo.webp">`
+when real Procreate exports land.

@@ -7,8 +7,7 @@ jump in at 2am and not have to scroll.
 |------|---|
 | [architecture.md](./architecture.md) | How the pieces fit. File layout. Data flow. |
 | [content.md](./content.md) | Adding and editing articles, ads, sections. The thing you'll touch most. |
-| [cutscenes.md](./cutscenes.md) | Writing and triggering cutscenes. GSAP timeline structure. |
-| [fx-and-audio.md](./fx-and-audio.md) | PixiJS FX overlay and Howler audio. How to swap in real sprites. |
+| [../fx/README.md](../fx/README.md) | Animation infrastructure — FSM + registry + dispatch. |
 | [styling.md](./styling.md) | Design tokens, typography scale, the component pattern. |
 | [build-and-deploy.md](./build-and-deploy.md) | Dev, build, preview, deploy to proper-goose.com. |
 
