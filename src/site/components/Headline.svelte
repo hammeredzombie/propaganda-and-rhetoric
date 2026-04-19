@@ -13,8 +13,9 @@
 <style>
   .article-headline {
     margin: 0 0 var(--space-5);
-    padding-bottom: var(--space-4);
-    border-bottom: 1px solid var(--color-rule);
+    padding: var(--space-4) 0;
+    border-top: 4px solid var(--color-accent);
+    border-bottom: 2px solid var(--color-ink-strong);
   }
 
   h1 {

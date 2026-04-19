@@ -14,7 +14,7 @@ source of truth.
 {
   id: 'cabinet-shuffle',             // URL-safe, unique, stable
   section: 'Politics',               // Rendered as eyebrow
-  headline: '...',                   // Card + article page headline
+  headline: '...',                   // Card headline
   dek: '...',                        // Subhead / deck
   byline: 'M. Delacroix',            // Author name
   role: 'Capitol Correspondent',     // Optional; empty string hides it
@@ -35,7 +35,7 @@ source of truth.
 ### Add an article
 
 1. Append a new object to the `articles` array in `articles.js`.
-2. Give it a unique `id` — it becomes `#/article/<id>` in the URL.
+2. Give it a unique `id` — stable handle used by game state.
 3. That's it. It will appear on the front page automatically, unless
    you want a specific slot (see *front-page slotting* below).
 
@@ -76,31 +76,12 @@ To change what appears where, reorder the array.
 If you want finer control (e.g. "this article never goes on the front
 page"), add a `frontpage: false` flag and filter in FrontPage.svelte.
 
-### Article page layout
+### Article body fields
 
-`ArticlePage.svelte` looks up the article by ID and lays it out as:
-
-```
-[ ← back ]
-[ eyebrow ]
-[ HEADLINE ]
-[ dek ]
-─────
-[ byline | date · read time ]
-─────
-[ lede illustration placeholder + caption ]
-
-[ drop-cap lede paragraph ]
-[ paragraph 2 ]
-  → if pullquote exists, it renders here
-[ paragraph 3 ]
-  → inline "Steady State Insurance" ad renders here
-[ paragraph 4… ]
-```
-
-The drop cap on the lede paragraph is done with
-`::first-letter` CSS. To disable it per-article, skip adding the
-`lede` class (or strip `article__para--lede` from `ArticlePage.svelte`).
+`body`, `pullquote`, and `readTime` are not rendered on the front
+page today. They're kept on the data model so future interactions
+(inline expansion, modal, a rebuilt article page) can consume them
+without a schema migration.
 
 ## Ads
 
@@ -119,11 +100,8 @@ using an object like:
 
 ### Where ads live
 
-Currently inline in the pages that use them:
-
-- `FrontPage.svelte` declares `sidebarAd` and `footerAd` near the top
-  of the `<script>` block.
-- `ArticlePage.svelte` declares `inlineAd`.
+Currently inline in `FrontPage.svelte` — `sidebarAd` and `footerAd`
+are declared near the top of the `<script>` block.
 
 If you start having more than ~5 ads, promote them into
 `game/ads.js` (same pattern as `articles.js`) and import.

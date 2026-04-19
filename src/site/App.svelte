@@ -3,8 +3,6 @@
   import Nav from './components/Nav.svelte';
   import Footer from './components/Footer.svelte';
   import FrontPage from './pages/FrontPage.svelte';
-  import ArticlePage from './pages/ArticlePage.svelte';
-  import { route } from './game/router.js';
 </script>
 
 <a class="skip-link" href="#main">Skip to content</a>
@@ -13,11 +11,7 @@
 <Nav />
 
 <main id="main" class="site-main" tabindex="-1">
-  {#if $route.name === 'article'}
-    <ArticlePage id={$route.params.id} />
-  {:else}
-    <FrontPage />
-  {/if}
+  <FrontPage />
 </main>
 
 <Footer />

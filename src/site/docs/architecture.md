@@ -3,16 +3,16 @@
 ## The mental model
 
 The game is a **real website** that happens to run a game underneath
-it. Everything you see is DOM + CSS — article cards, layouts,
-typography, hover states, routing. The "game" part lives in a handful
-of JS modules.
+it. Everything you see is DOM + CSS — article cards, layout,
+typography. The site is a single static front page; the "game" part
+lives in a handful of JS modules.
 
 ```
 +-----------------------------------------------+
 |                                               |
 |   DOM (Svelte components)                     |
 |   ─ Masthead, Nav, ArticleCard, AdSlot…       |
-|   ─ Front page + Article page                 |
+|   ─ Front page only                           |
 |                                               |
 +-----------------------------------------------+
          ▲                         ▲
@@ -46,7 +46,7 @@ Paths below are relative to `src/site/` (the site project root).
 
 ```
 main.js                  entry point
-App.svelte               masthead + nav + router + footer
+App.svelte               masthead + nav + front page + footer
 index.html               Vite HTML entry
 vite.config.js           Vite config (base: '/')
 styles/global.css        design tokens, typography, resets
@@ -55,13 +55,12 @@ components/              building blocks (all presentational)
   Nav.svelte             section nav
   Footer.svelte          footer
   ArticleCard.svelte     hero/large/medium/small card on front page
-  Headline.svelte        article-page headline + dek + eyebrow
+  Headline.svelte        headline + dek + eyebrow
   Byline.svelte          author, role, date, read time
   PullQuote.svelte       inline blockquote
   AdSlot.svelte          small/medium/large advertisement block
 pages/
   FrontPage.svelte       composes the front page from articles.js
-  ArticlePage.svelte     renders one article + inline ad/pullquote
 fx/
   machine.js             FSM factory
   registry.js            animation registry
@@ -70,7 +69,6 @@ fx/
 game/
   state.js               Svelte store + save/load/reset
   events.js              pub/sub event bus
-  router.js              hash-based router store
   articles.js            article data (the only content file)
   audio.js               Howler wrapper + autoplay unlock
 ```
@@ -105,18 +103,7 @@ animation library changes, nothing else changes.
 
 ## Routing
 
-Hash-based. `router.js` exposes a readable store `route` that parses
-`window.location.hash` into `{ name, params }`. Two routes exist:
-
-- `''` or `'#/'` → `{ name: 'home' }`
-- `'#/article/<id>'` → `{ name: 'article', params: { id } }`
-
-`App.svelte` switches between `FrontPage` and `ArticlePage` based on
-`$route.name`. `goToArticle(id)` and `goHome()` are the two helpers.
-
-We don't use SvelteKit — for a single-entry static site, hash-routing
-keeps the bundle small and avoids needing server-side rewrites at the
-host.
+There is no router. The site is a single static front page.
 
 ## Rendering order
 
@@ -139,10 +126,6 @@ If you're triggering music or SFX on page load, hook into
 ## Where to plug in real art
 
 Right now every visual asset is a CSS-drawn placeholder box with a
-label like `[illustration]`. Find these in:
-
-- `ArticleCard.svelte` — `.card__image-placeholder`
-- `ArticlePage.svelte` — `.article__image-placeholder`
-
-Swap the div for an `<img src="./assets/art/foo.webp">` when real
-Procreate exports land.
+label like `[illustration]`. Find these in `ArticleCard.svelte`
+(`.card__image`). Swap the div for an `<img src="./assets/art/foo.webp">`
+when real Procreate exports land.

@@ -13,9 +13,9 @@
 
 <div class="site-nav" aria-hidden="true">
   <ul>
-    {#each sections as section}
+    {#each sections as section, i}
       <li>
-        <span class="site-nav__item">{section}</span>
+        <span class="site-nav__item" class:site-nav__item--current={i === 0}>{section}</span>
       </li>
     {/each}
   </ul>
@@ -23,7 +23,8 @@
 
 <style>
   .site-nav {
-    border-bottom: 1px solid var(--color-rule);
+    border-top: 2px solid var(--color-ink-strong);
+    border-bottom: 2px solid var(--color-ink-strong);
     background: var(--color-paper);
   }
 
@@ -55,6 +56,13 @@
     text-transform: uppercase;
     letter-spacing: 0.14em;
     color: var(--color-ink);
+  }
+
+  .site-nav__item--current {
+    background: var(--color-navy);
+    color: var(--color-paper);
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
   }
 
   @media (max-width: 720px) {

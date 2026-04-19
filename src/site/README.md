@@ -57,11 +57,9 @@ src/site/
     AdSlot.svelte           small / medium / large
   pages/
     FrontPage.svelte
-    ArticlePage.svelte
   game/
     state.js                Svelte store + localStorage (save/load/reset)
     events.js               pub/sub
-    router.js               hash-based routing (home vs /article/:id)
     audio.js                Howler wrapper with autoplay unlock
     articles.js             placeholder article data
   fx/
@@ -84,8 +82,11 @@ src/site/
 
 ## Interactions
 
-- Click an article → state bumps `articleOpenCount`, route changes
-  to the article page, drift stage data attribute may shift.
+The front page is intentionally static — no click handlers, no
+routing. Game-mechanic modules (`state`, `events`, `audio`, `fx`)
+are wired up at boot and waiting to be driven from whatever
+interactions are added next.
+
 - All progress persists in `localStorage` under key
   `propaganda-and-rhetoric:v1`.
 - No animations are wired on day one; add them by registering with
@@ -100,8 +101,7 @@ localStorage.removeItem('propaganda-and-rhetoric:v1'); location.reload();
 
 Procreate → PNG with transparency → `cwebp -q 80 in.png -o out.webp` →
 drop into `assets/art/`. Swap the `[illustration]` placeholder div
-in `ArticleCard.svelte` / `ArticlePage.svelte` for an `<img>` when
-real art is ready.
+in `ArticleCard.svelte` for an `<img>` when real art is ready.
 
 Audio: drop sprite files into `assets/audio/`, update the
 `audio.register('id', { src: [...] })` calls in `main.js`.

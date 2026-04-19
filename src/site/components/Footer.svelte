@@ -40,7 +40,7 @@
 
 <style>
   .site-footer {
-    border-top: 1px solid var(--color-rule-strong);
+    border-top: 6px solid var(--color-accent);
     margin-top: var(--space-7);
     background: var(--color-paper);
     padding: var(--space-7) 0 var(--space-6);
@@ -67,12 +67,15 @@
   }
 
   .site-footer__col-heading {
+    display: inline-block;
     font-family: var(--font-display);
     font-size: var(--text-xs);
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     font-weight: 700;
-    color: var(--color-ink);
+    color: var(--color-paper);
+    background: var(--color-navy);
+    padding: 2px var(--space-3) 1px;
     margin: 0 0 var(--space-3);
   }
 

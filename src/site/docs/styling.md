@@ -11,45 +11,59 @@ as `var(--token-name)` anywhere.
 ### Colors
 
 ```css
---color-bg:          /* page background, warm off-white */
---color-paper:       /* card/ad background */
---color-ink:         /* body text, near-black */
---color-ink-soft:    /* secondary text */
---color-ink-muted:   /* captions, fine print */
---color-rule:        /* hairline dividers */
---color-rule-strong: /* heavy dividers (masthead bottom, etc.) */
---color-accent:      /* brand red for eyebrows, hovers */
---color-accent-soft: /* lighter red, unused today — available */
---color-link:        /* deep blue for inline links */
---color-ad-bg:       /* slightly warmer beige for ad slots */
+--color-bg:           /* page background, pulp cream */
+--color-paper:        /* card / column ground */
+--color-ink:          /* body text, warm near-black */
+--color-ink-soft:     /* secondary text */
+--color-ink-muted:    /* captions, fine print */
+--color-ink-strong:   /* nameplate, top rules */
+--color-rule:         /* hairline dividers */
+--color-rule-strong:  /* heavy dividers (masthead bottom, etc.) */
+
+/* Recruitment-poster chrome — see .impeccable.md slot table */
+--color-accent:       /* ring red — banners, stamps, date rule */
+--color-accent-soft:  /* drift-state deep red */
+--color-navy:         /* wartime navy — kickers, cartouches, nav-current */
+--color-navy-deep:    /* drift-state deep navy */
+--color-gold:         /* mustard — pullquote ground, ad label, ornaments */
+--color-gold-deep:    /* burnt orange — drift state */
+
+--color-link:         /* body-ink link color */
+--color-censor:       /* blackout bars (drift only) */
 ```
 
-Changing the whole palette = editing these eleven values. Don't
-hardcode hex in components.
+Primitives (`--paper-*`, `--ink-*`, `--accent*`, `--gold*`, `--navy*`)
+stay stable; the `--color-*` aliases rebind under
+`:root[data-drift="…"]` so the paper mutates as the game advances.
+Don't hardcode hex in components.
 
 ### Fonts
 
 ```css
---font-serif:   /* body copy — Source Serif 4, Charter, Georgia */
---font-display: /* headlines — Playfair Display */
---font-sans:    /* eyebrows, metadata, UI chrome — Oswald */
+--font-body:    /* body copy — Gelasio, Georgia, Source Serif 4 */
+--font-display: /* headlines, nameplate, eyebrows — Old Standard TT */
 ```
 
-All three are loaded from Google Fonts in `index.html`.
+Both are loaded from Google Fonts in `index.html`. There is no
+sans-serif in this project — eyebrows and nav chrome use
+letterspaced all-caps Old Standard TT, not Oswald.
 
 ### Type scale
 
 ```css
---text-xs:   0.75rem   /* labels, metadata */
---text-sm:   0.875rem  /* captions, small body */
---text-base: 1rem
---text-lg:   1.125rem  /* article body */
---text-xl:   1.375rem  /* card dek, inline headlines */
---text-2xl:  1.75rem   /* card large headlines */
---text-3xl:  2.25rem   /* section headlines */
---text-4xl:  3rem      /* article headline on small screens */
---text-5xl:  4rem      /* masthead, hero headlines */
+--text-xxs:  0.6875rem /* 11px — running heads, microcopy */
+--text-xs:   0.75rem   /* 12px — bylines, datelines, eyebrows */
+--text-sm:   0.8125rem /* 13px — small caps decks, captions */
+--text-base: 0.9375rem /* 15px — body copy */
+--text-md:   1.0625rem /* 17px — sub-hero headlines */
+--text-lg:   1.375rem  /* 22px — secondary headlines */
+--text-xl:   1.75rem   /* 28px — front-page hero dek */
+--text-2xl:  2.375rem  /* 38px — hero headline */
+--text-3xl:  3rem      /* 48px — masthead nameplate */
 ```
+
+No `--text-4xl` or `--text-5xl` — the scale is tuned for the
+LD embed viewport (948 × 533), not unconstrained desktop.
 
 ### Line heights
 
@@ -63,14 +77,14 @@ All three are loaded from Google Fonts in `index.html`.
 ### Spacing
 
 ```css
---space-1:  0.25rem
---space-2:  0.5rem
---space-3:  0.75rem
---space-4:  1rem
---space-5:  1.5rem
---space-6:  2rem
---space-8:  3rem
---space-10: 4rem
+--space-1: 0.25rem    /*  4px */
+--space-2: 0.375rem   /*  6px */
+--space-3: 0.5rem     /*  8px */
+--space-4: 0.75rem    /* 12px */
+--space-5: 1rem       /* 16px — default gutter */
+--space-6: 1.5rem     /* 24px — section break */
+--space-7: 2rem       /* 32px */
+--space-8: 3rem       /* 48px — top-of-page only */
 ```
 
 All component padding/margins use these. If you catch yourself
@@ -80,9 +94,16 @@ typing `padding: 18px`, reach for a token instead.
 
 Defined in `global.css`, usable from any component:
 
-- **`.eyebrow`** — small uppercase red label. Used for section tags.
-- **`.rule--strong`** — 2px top border. Marks section transitions
-  on the front page.
+- **`.eyebrow`** — filled navy cartouche with cream letterspaced
+  all-caps. Used for section kickers on cards and headlines.
+- **`.eyebrow--accent`** — red variant, reserved for hero kickers.
+- **`.eyebrow--gold`** — gold ground, ink type (ornamental).
+- **`.rule--strong`** — 2px ink top border. Section transitions.
+- **`.rule--accent`** — 4px red top border. Banner-style article opener.
+- **`.banner`** — filled red caps banner (see masthead ribbon).
+- **`.banner--navy`** — navy variant.
+
+See `.impeccable.md` for the canonical slot table (which color goes where).
 
 Everything else is per-component scoped CSS.
 
@@ -143,37 +164,9 @@ is inherently desktop-flavored. Just ensure it doesn't break.
 
 ## Adding a new page
 
-1. Create `pages/NewPage.svelte`.
-2. Add a new route to `game/router.js`:
-
-```js
-function parse() {
-  const hash = window.location.hash.replace(/^#/, '');
-  if (hash.startsWith('/article/')) return { name: 'article', params: { id: hash.slice('/article/'.length) } };
-  if (hash === '/credits') return { name: 'credits', params: {} };
-  return { name: 'home', params: {} };
-}
-
-export function goToCredits() { window.location.hash = '/credits'; window.scrollTo({ top: 0 }); }
-```
-
-3. Add the branch to `App.svelte`:
-
-```svelte
-{#if $route.name === 'credits'}
-  <CreditsPage />
-{:else if $route.name === 'article'}
-  <ArticlePage id={$route.params.id} />
-{:else}
-  <FrontPage />
-{/if}
-```
-
-## Drop caps and print flourishes
-
-The article lede uses `::first-letter` to draw a large accent-colored
-initial cap. To remove it from an article, pass a flag from
-`articles.js` and drop the `article__para--lede` class conditionally.
+The site is a single static front page — there's no router. If you
+need a second page, introduce routing yourself (hash-based is still
+the easy path for a static host) and switch on it in `App.svelte`.
 
 ## Placeholder images
 
@@ -182,8 +175,7 @@ keeps the build runnable without any art. Swap the placeholder divs
 for `<img>` tags when Procreate exports land.
 
 Check:
-- `ArticleCard.svelte` — `.card__image-placeholder`
-- `ArticlePage.svelte` — `.article__image-placeholder`
+- `ArticleCard.svelte` — `.card__image`
 - `AdSlot.svelte` — uses no image, pure type; can take one if you
   want branded ad art.
 

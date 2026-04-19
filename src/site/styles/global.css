@@ -1,21 +1,26 @@
 :root {
   color-scheme: light;
 
-  /* OKLCH primitives — drift-state sources of truth */
-  --paper-base:  oklch(0.96 0.015 85);
-  --paper-warm:  oklch(0.94 0.02 80);
-  --paper-aged:  oklch(0.90 0.03 75);
-  --paper-ad:    oklch(0.93 0.02 78);
+  /* OKLCH primitives — camp-poster register, matched to the favicon seal */
+  --paper-base:  oklch(0.95 0.012 100);  /* #F3F3E8 pulp cream */
+  --paper-warm:  oklch(0.93 0.025 90);
+  --paper-aged:  oklch(0.89 0.035 78);
 
   --ink-base:    oklch(0.18 0.01 40);
   --ink-soft:    oklch(0.35 0.01 40);
   --ink-muted:   oklch(0.48 0.008 40);
-  --ink-rule:    oklch(0.78 0.01 65);
-  --ink-strong:  oklch(0.14 0.01 40);
+  --ink-rule:    oklch(0.78 0.015 90);
+  --ink-strong:  oklch(0.10 0.01 40);
 
-  --accent:      oklch(0.42 0.16 25);
-  --accent-deep: oklch(0.34 0.17 22);
-  --censor:      oklch(0.12 0.01 40);
+  /* Lithographic accents — poster-bright, sourced from the favicon seal */
+  --accent:      oklch(0.49 0.19 25);    /* #B12330 ring red */
+  --accent-deep: oklch(0.40 0.18 22);
+  --gold:        oklch(0.78 0.13 85);    /* #D8B246 mustard */
+  --gold-deep:   oklch(0.66 0.17 55);    /* #D7821B burnt orange */
+  --navy:        oklch(0.32 0.09 258);   /* #1F3461 wartime navy */
+  --navy-deep:   oklch(0.25 0.10 258);
+
+  --censor:      oklch(0.08 0.005 40);
 
   /* Semantic aliases — rebound per [data-drift] stage below */
   --color-bg: var(--paper-base);
@@ -28,8 +33,11 @@
   --color-rule-strong: var(--ink-strong);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-deep);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
   --color-link: var(--ink-base);
-  --color-ad-bg: var(--paper-ad);
   --color-censor: var(--censor);
 
   --font-display: 'Old Standard TT', 'Times New Roman', 'Georgia', serif;
@@ -146,16 +154,53 @@ hr {
 }
 
 .eyebrow {
+  display: inline-block;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--text-xs);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--color-ink-soft);
+  letter-spacing: 0.16em;
+  color: var(--color-paper);
+  background: var(--color-navy);
+  padding: 2px var(--space-3) 1px;
+  margin-bottom: var(--space-2);
+  line-height: 1.5;
+  font-feature-settings: "lnum", "kern";
+}
+
+.eyebrow--accent {
+  background: var(--color-accent);
+}
+
+.eyebrow--gold {
+  background: var(--color-gold);
+  color: var(--color-ink);
 }
 
 .rule--strong {
   border-top: 2px solid var(--color-rule-strong);
+}
+
+.rule--accent {
+  border-top: 4px solid var(--color-accent);
+}
+
+.banner {
+  background: var(--color-accent);
+  color: var(--color-paper);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  text-align: center;
+  /* asymmetric padding — press misregistration (see realism #1) */
+  padding: calc(var(--space-2) + 1px) var(--space-5) var(--space-2);
+  font-feature-settings: "lnum", "kern";
+}
+
+.banner--navy {
+  background: var(--color-navy);
 }
 
 .skip-link {
@@ -209,7 +254,9 @@ hr {
   --color-paper: var(--paper-warm);
   --color-ink: var(--ink-strong);
   --color-accent: var(--accent-deep);
-  --color-rule: oklch(0.72 0.012 65);
+  --color-gold: var(--gold-deep);
+  --color-navy: var(--navy-deep);
+  --color-rule: oklch(0.72 0.018 85);
 }
 
 :root[data-drift="censored"] {
@@ -217,7 +264,9 @@ hr {
   --color-paper: var(--paper-aged);
   --color-ink: var(--ink-strong);
   --color-accent: var(--accent-deep);
-  --color-rule: oklch(0.68 0.015 65);
+  --color-gold: var(--gold-deep);
+  --color-navy: var(--navy-deep);
+  --color-rule: oklch(0.68 0.018 80);
   --color-rule-strong: oklch(0.10 0.01 40);
 }
 

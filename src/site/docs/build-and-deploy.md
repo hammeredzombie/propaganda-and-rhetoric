@@ -53,9 +53,7 @@ same `dist/` output.
 - [ ] `npm run build` runs clean
 - [ ] `npm run preview` loads without console errors
 - [ ] `npm test` passes (fx unit tests)
-- [ ] Every article opens from the front page
-- [ ] Back button returns to the front page
-- [ ] Refreshing on an article page still loads it (hash routing survives reload)
+- [ ] Front page renders every card and both ad slots
 - [ ] localStorage reset does the right thing (first-time state)
 - [ ] Publication name, masthead, and all copy are fictional — no real
       outlets, mastheads, or URLs
