@@ -2,12 +2,12 @@
 // clicks the wiggling target word on a page.  One themed idiom per route.
 
 export const hints = {
-  home: 'Home is where the heart is',
-  politics: 'By the book',
-  world: "World's apart",
-  business: 'Money talks',
-  opinion: "Speak your mind",
+  home: 'Money talks',
+  politics: 'Home is where the heart is',
+  world: 'Lightbulb moment',
+  business: 'One foot in the grave',
+  opinion: "World's apart",
   culture: 'Toe the line',
-  science: 'Lightbulb moment',
-  obituaries: 'One foot in the grave'
+  science: 'Speak your mind',
+  obituaries: 'By the book'
 };
