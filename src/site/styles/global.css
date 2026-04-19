@@ -3,8 +3,6 @@
 
   /* OKLCH primitives — camp-poster register, matched to the favicon seal */
   --paper-base:  oklch(0.95 0.012 100);  /* #F3F3E8 pulp cream */
-  --paper-warm:  oklch(0.93 0.025 90);
-  --paper-aged:  oklch(0.89 0.035 78);
 
   --ink-base:    oklch(0.18 0.01 40);
   --ink-soft:    oklch(0.35 0.01 40);
@@ -14,15 +12,12 @@
 
   /* Lithographic accents — poster-bright, sourced from the favicon seal */
   --accent:      oklch(0.49 0.19 25);    /* #B12330 ring red */
-  --accent-deep: oklch(0.40 0.18 22);
   --gold:        oklch(0.78 0.13 85);    /* #D8B246 mustard */
   --gold-deep:   oklch(0.66 0.17 55);    /* #D7821B burnt orange */
   --navy:        oklch(0.32 0.09 258);   /* #1F3461 wartime navy */
   --navy-deep:   oklch(0.25 0.10 258);
 
-  --censor:      oklch(0.08 0.005 40);
-
-  /* Semantic aliases — rebound per [data-drift] stage below */
+  /* Semantic aliases */
   --color-bg: var(--paper-base);
   --color-paper: var(--paper-base);
   --color-ink: var(--ink-base);
@@ -32,13 +27,11 @@
   --color-rule: var(--ink-rule);
   --color-rule-strong: var(--ink-strong);
   --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-deep);
   --color-gold: var(--gold);
   --color-gold-deep: var(--gold-deep);
   --color-navy: var(--navy);
   --color-navy-deep: var(--navy-deep);
   --color-link: var(--ink-base);
-  --color-censor: var(--censor);
 
   --font-display: 'Old Standard TT', 'Times New Roman', 'Georgia', serif;
   --font-body: 'Gelasio', 'Georgia', 'Source Serif 4', 'Times New Roman', serif;
@@ -241,32 +234,3 @@ hr {
     font-size: var(--text-lg);
   }
 }
-
-/* ── Drift stages ── driven by state.js via data-drift on :root.
-   Rebinds semantic aliases; OKLCH primitives are stable. */
-:root[data-drift="warm"] {
-  --color-bg: var(--paper-warm);
-  --color-paper: var(--paper-warm);
-}
-
-:root[data-drift="loud"] {
-  --color-bg: var(--paper-warm);
-  --color-paper: var(--paper-warm);
-  --color-ink: var(--ink-strong);
-  --color-accent: var(--accent-deep);
-  --color-gold: var(--gold-deep);
-  --color-navy: var(--navy-deep);
-  --color-rule: oklch(0.72 0.018 85);
-}
-
-:root[data-drift="censored"] {
-  --color-bg: var(--paper-aged);
-  --color-paper: var(--paper-aged);
-  --color-ink: var(--ink-strong);
-  --color-accent: var(--accent-deep);
-  --color-gold: var(--gold-deep);
-  --color-navy: var(--navy-deep);
-  --color-rule: oklch(0.68 0.018 80);
-  --color-rule-strong: oklch(0.10 0.01 40);
-}
-
