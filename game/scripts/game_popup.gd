@@ -31,13 +31,14 @@ func show_lost() -> void:
 
 func show_win() -> void:
 	_action = &"win"
-	label.text = "The End"
+	label.text = "You have restored balance to the Ducknasty.\nThe end."
 	button.text = "  Retry  "
 	_show()
 
 
 func _show() -> void:
 	root.visible = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	button.grab_focus()
 
 

@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bj831tsv4mjr8" path="res://game/scripts/table.gd" id="1_table"]
 [ext_resource type="Texture2D" uid="uid://cvcovu1nvvj3c" path="res://game/assets/sprites/table-head-on.png" id="2_tex"]
-[ext_resource type="Script" path="res://game/scripts/back_table_link_area.gd" id="3_link_area"]
+[ext_resource type="Script" uid="uid://74usjf7y50t8" path="res://game/scripts/back_table_link_area.gd" id="3_link_area"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_table"]
-size = Vector3(1.2, 0.38, 0.9)
+size = Vector3(1.2, 0.38, 0.6)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_back_area"]
 size = Vector3(2, 1, 0.45)
@@ -14,20 +14,20 @@ size = Vector3(2, 1, 0.45)
 script = ExtResource("1_table")
 
 [node name="Sprite" type="Sprite3D" parent="." unique_id=11636713]
+flip_h = true
 pixel_size = 0.003306452
 alpha_cut = 1
 texture = ExtResource("2_tex")
-flip_h = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1187285727]
 shape = SubResource("BoxShape3D_table")
 
 [node name="BackTableArea" type="Area3D" parent="." unique_id=2051523378]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99844146, -0.047868162)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("3_link_area")
 external_url = "https://gander.proper-goose.com"
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99844146, -0.047868162)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BackTableArea" unique_id=542117388]
 shape = SubResource("BoxShape3D_back_area")
