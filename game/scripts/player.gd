@@ -93,7 +93,8 @@ func _try_interact() -> void:
 func _on_touch_area_entered(area: Area3D) -> void:
 	if _input_locked:
 		return
-	if area.has_method("interact"):
+	var parent := area.get_parent()
+	if parent is NPC:
 		area.interact(self)
 
 
