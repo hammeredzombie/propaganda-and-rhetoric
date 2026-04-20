@@ -24,6 +24,7 @@ const WALL_INNER_X: float = 9.76
 ]
 @onready var nav_region: NavigationRegion3D = $NavRegion
 @onready var corkboard: Sprite3D = $NavRegion/Corkboard
+@onready var music: AudioStreamPlayer = $Music
 
 
 func _ready() -> void:
@@ -33,6 +34,15 @@ func _ready() -> void:
 	await get_tree().process_frame
 	nav_region.bake_navigation_mesh()
 	GamePopup.show_start()
+	GamePopup.started.connect(_on_started)
+
+
+func _on_started() -> void:
+	await get_tree().create_timer(5.0).timeout
+	while true:
+		music.play()
+		await music.finished
+		await get_tree().create_timer(9.0).timeout
 
 
 func _spawn_wall_posters() -> void:

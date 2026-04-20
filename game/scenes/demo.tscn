@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ceb4vhxvshitc"]
 
 [ext_resource type="Script" uid="uid://hyl7akrv4qrl" path="res://game/scripts/demo.gd" id="1_demo"]
+[ext_resource type="AudioStream" path="res://game/assets/audio/trumpet.mp3" id="8_music"]
 [ext_resource type="PackedScene" path="res://game/scenes/player.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://game/scenes/npc.tscn" id="3_npc"]
 [ext_resource type="PackedScene" path="res://game/scenes/table.tscn" id="4_table"]
@@ -201,3 +202,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3)
 npc_color = 1
 display_name = "Blue"
 dialogue_line = "I used to write for them. Now I just drift."
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_music")
+volume_db = -33.0
+autoplay = false
