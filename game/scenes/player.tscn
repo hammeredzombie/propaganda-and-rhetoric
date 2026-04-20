@@ -6,6 +6,9 @@
 radius = 0.35
 height = 1.7
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_touch"]
+radius = 1.0
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ch"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cross"]
@@ -30,6 +33,15 @@ fov = 85.0
 target_position = Vector3(0, 0, -3)
 collision_mask = 2
 collide_with_areas = true
+
+[node name="TouchArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="TouchShape" type="CollisionShape3D" parent="TouchArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("SphereShape3D_touch")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

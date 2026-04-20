@@ -8,6 +8,7 @@ extends CharacterBody3D
 
 @onready var camera: Camera3D = $Camera
 @onready var interact_ray: RayCast3D = $Camera/InteractRay
+@onready var touch_area: Area3D = $TouchArea
 
 var _input_locked: bool = false
 
@@ -22,6 +23,7 @@ func _ready() -> void:
 	_input_locked = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	interact_ray.target_position = Vector3(0, 0, -interact_range)
+	touch_area.area_entered.connect(_on_touch_area_entered)
 
 
 func _notification(what: int) -> void:
@@ -86,6 +88,13 @@ func _try_interact() -> void:
 	var hit := interact_ray.get_collider()
 	if hit and hit.has_method("interact"):
 		hit.interact(self)
+
+
+func _on_touch_area_entered(area: Area3D) -> void:
+	if _input_locked:
+		return
+	if area.has_method("interact"):
+		area.interact(self)
 
 
 func _on_dialogue_opened() -> void:
