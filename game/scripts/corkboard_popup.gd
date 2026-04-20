@@ -31,6 +31,7 @@ signal closed
 @onready var close_button: Button = $Root/Panel/Margin/VBox/CloseRow/Close
 @onready var submit_button: Button = $Root/Panel/Margin/VBox/CloseRow/Submit
 @onready var bam_label: Label = $Root/Panel/Margin/VBox/BamRow/BamLabel
+@onready var bam_sound: AudioStreamPlayer = $BamSound
 
 var line_edits: Array[LineEdit] = []
 var mistakes: int = 0
@@ -97,6 +98,7 @@ func _on_submit() -> void:
 				bam_text += " "
 			bam_text += "Bam!"
 		bam_label.text = bam_text
+		bam_sound.play()
 		if mistakes >= 3:
 			bam_label.text = ""
 			mistakes = 0

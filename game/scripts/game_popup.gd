@@ -17,7 +17,7 @@ func _ready() -> void:
 
 func show_start() -> void:
 	_action = &"start"
-	label.text = "Hello soldier. This is your time to fight the Goosetapo. Not with guns, but with your little Duck brain.\nWe need you to match the Signals on the Board with the ground truth in the dossier. But three mistakes and there's sure to be a leak that gets you killed.\nYou will need to go online to find the Goose."
+	label.text = "Hello soldier! This is your time to fight the Goosetapo. Not with guns, but with your little Duck brain.\nWe need you to match the Signals on the Board with the ground truth in the dossier. But three mistakes and there's sure to be a leak that gets you killed.\nYou will need to go online to find the Goose."
 	button.text = "  Continue  "
 	_show()
 

@@ -2,12 +2,15 @@
 
 [ext_resource type="Script" uid="uid://hyl7akrv4qrl" path="res://game/scripts/demo.gd" id="1_demo"]
 [ext_resource type="AudioStream" path="res://game/assets/audio/trumpet.mp3" id="8_music"]
+[ext_resource type="AudioStream" path="res://game/assets/audio/machine_gun.mp3" id="9_machinegun"]
 [ext_resource type="PackedScene" path="res://game/scenes/player.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://game/scenes/npc.tscn" id="3_npc"]
 [ext_resource type="PackedScene" path="res://game/scenes/table.tscn" id="4_table"]
 [ext_resource type="PackedScene" path="res://game/scenes/table_head_on.tscn" id="5_table_head_on"]
 [ext_resource type="Texture2D" path="res://game/assets/sprites/corkboard.png" id="6_corkboard"]
 [ext_resource type="Script" path="res://game/scripts/corkboard_area.gd" id="7_corkboard_area"]
+[ext_resource type="AudioStream" path="res://game/assets/audio/mama.mp3" id="10_mama"]
+[ext_resource type="AudioStream" path="res://game/assets/audio/dada.mp3" id="11_dada"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 sky_top_color = Color(0.02, 0.02, 0.05, 1)
@@ -196,14 +199,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -2)
 npc_color = 0
 display_name = "Red"
 dialogue_line = "You shouldn't be here. The editors are watching."
+audio_mommy = ExtResource("10_mama")
+audio_daddy = ExtResource("11_dada")
 
 [node name="Blue" parent="." unique_id=1258735111 instance=ExtResource("3_npc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3)
 npc_color = 1
 display_name = "Blue"
 dialogue_line = "I used to write for them. Now I just drift."
+audio_mommy = ExtResource("10_mama")
+audio_daddy = ExtResource("11_dada")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_music")
 volume_db = -33.0
+autoplay = false
+
+[node name="MachineGun" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_machinegun")
 autoplay = false

@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://bca8cec6bntem"]
+[gd_scene load_steps=3 format=3 uid="uid://bca8cec6bntem"]
 
 [ext_resource type="Script" uid="uid://dv5753pyedov8" path="res://game/scripts/corkboard_popup.gd" id="1_popup"]
+[ext_resource type="AudioStream" path="res://game/assets/audio/bam.mp3" id="2_bam"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 bg_color = Color(0.06, 0.06, 0.08, 0.96)
@@ -96,3 +97,6 @@ text = "  Submit  "
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "  Close  "
+
+[node name="BamSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_bam")
